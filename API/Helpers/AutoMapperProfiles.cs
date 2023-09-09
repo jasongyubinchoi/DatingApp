@@ -21,6 +21,10 @@ namespace API.Helpers
                 .ForMember(d => d.RecipientPhotoUrl, o => o.MapFrom(s => s.Recipient.Photos
                     .FirstOrDefault(x => x.IsMain).Url));
 
+            // We are sending back the result from Database to server as UTC format
+            CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
+            CreateMap<DateTime?, DateTime?>().ConvertUsing(d => d.HasValue ? 
+                DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : null);
         }
     }
 }
